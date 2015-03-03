@@ -1,0 +1,14 @@
+<adapter-config name="SELECT_empleado" adapter="Database Adapter" wsdlLocation="SELECT_empleado.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/empleadosPool" UIConnectionName="Connection1" adapterRef=""/>
+  <endpoint-interaction portType="SELECT_empleado_ptt" operation="SELECT_empleadoSelect">
+    <interaction-spec className="oracle.tip.adapter.db.DBReadInteractionSpec">
+      <property name="DescriptorName" value="SELECT_empleado.Empleados"/>
+      <property name="QueryName" value="SELECT_empleadoSelect"/>
+      <property name="MappingsMetaDataURL" value="SELECT_empleado-or-mappings.xml"/>
+      <property name="ReturnSingleResultSet" value="false"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

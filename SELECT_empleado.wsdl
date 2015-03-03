@@ -1,0 +1,25 @@
+<?binding.jca SELECT_empleado_db.jca?>
+<wsdl:definitions name="SELECT_empleado" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/SELECT_empleado">
+    <plt:partnerLinkType name="SELECT_empleado_plt">
+        <plt:role name="SELECT_empleado_role">
+            <plt:portType name="tns:SELECT_empleado_ptt"/>
+        </plt:role>
+    </plt:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/SELECT_empleado" schemaLocation="xsd/SELECT_empleado_table.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="SELECT_empleadoSelect_inputParameters">
+        <wsdl:part name="SELECT_empleadoSelect_inputParameters" element="top:SELECT_empleadoSelect_paramInputParameters"/>
+    </wsdl:message>
+    <wsdl:message name="EmpleadosCollection_msg">
+        <wsdl:part name="EmpleadosCollection" element="top:EmpleadosCollection"/>
+    </wsdl:message>
+    <wsdl:portType name="SELECT_empleado_ptt">
+        <wsdl:operation name="SELECT_empleadoSelect">
+            <wsdl:input message="tns:SELECT_empleadoSelect_inputParameters"/>
+            <wsdl:output message="tns:EmpleadosCollection_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

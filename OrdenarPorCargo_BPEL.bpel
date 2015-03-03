@@ -1,0 +1,78 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Mon Mar 02 17:36:24 ART 2015
+  Author:  ssaczkow
+  Type: BPEL 2.0 Process
+  Purpose: One Way BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="OrdenarPorCargo_BPEL"
+               targetNamespace="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/OrdenarPorCargo_BPEL"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/OrdenarPorCargo_BPEL"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:ns1="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/empleado_DIRECTOR_WRITE_Service"
+         xmlns:ns2="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/empleado_QA_WRITE_Service">
+
+  <import namespace="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/OrdenarPorCargo_BPEL" location="OrdenarPorCargo_BPEL.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="ordenarporcargo_bpel_client" partnerLinkType="client:OrdenarPorCargo_BPEL" myRole="OrdenarPorCargo_BPELProvider"/>
+    <partnerLink name="WRITE_DIRECTOR_Service"
+                 partnerLinkType="ns1:WRITE_DIRECTOR_Service"
+                 partnerRole="ordenarPorCargo"/>
+    <partnerLink name="WRITE_QA_Service" partnerLinkType="ns2:WRITE_QA_Service"
+                 partnerRole="ordenarPorNombre_ptt"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:OrdenarPorCargo_BPELRequestMessage"/>
+    <variable name="WRITE_QA_ordenarPorNombre_InputVariable"
+              messageType="ns2:requestMessage"/>
+    <variable name="WRITE_DIRECTOR_ordenarPorCargo_InputVariable"
+              messageType="ns1:requestMessage"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in OrdenarPorCargo_BPEL.wsdl) -->
+    <receive name="receiveInput" partnerLink="ordenarporcargo_bpel_client" portType="client:OrdenarPorCargo_BPEL" operation="process" variable="inputVariable" createInstance="yes"/>
+    <invoke name="WRITE_QA" bpelx:invokeAsDetail="no"
+            partnerLink="WRITE_QA_Service" portType="ns2:ordenarPorNombre_ptt"
+            operation="ordenarPorNombre"
+            inputVariable="WRITE_QA_ordenarPorNombre_InputVariable"/>
+    <invoke name="WRITE_DIRECTOR" bpelx:invokeAsDetail="no"
+            partnerLink="WRITE_DIRECTOR_Service"
+            portType="ns1:ordenarPorCargo" operation="ordenarPorCargo"
+            inputVariable="WRITE_DIRECTOR_ordenarPorCargo_InputVariable"/>
+  </sequence>
+</process>

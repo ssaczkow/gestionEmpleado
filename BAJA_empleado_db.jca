@@ -1,0 +1,15 @@
+<adapter-config name="BAJA_empleado" adapter="Database Adapter" wsdlLocation="BAJA_empleado.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/empleadosPool" UIConnectionName="Connection1" adapterRef=""/>
+  <endpoint-interaction portType="BAJA_empleado_ptt" operation="delete">
+    <interaction-spec className="oracle.tip.adapter.db.DBWriteInteractionSpec">
+      <property name="DescriptorName" value="BAJA_empleado.Empleados"/>
+      <property name="DmlType" value="delete"/>
+      <property name="DetectOmissions" value="true"/>
+      <property name="OptimizeMerge" value="true"/>
+      <property name="MappingsMetaDataURL" value="BAJA_empleado-or-mappings.xml"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

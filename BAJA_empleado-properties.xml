@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+   <entry key="EMPLEADOS:db_table_type">TABLE</entry>
+   <entry key="EMPLEADOS.CARGO:db_column_size">40</entry>
+   <entry key="EMPLEADOS.ID:db_column_not_null">true</entry>
+   <entry key="EMPLEADOS:db_column_2">CARGO</entry>
+   <entry key="EMPLEADOS.CARGO:db_column_not_null">false</entry>
+   <entry key="EMPLEADOS:db_column_1">NOMBRE</entry>
+   <entry key="EMPLEADOS.NOMBRE:db_column_not_null">false</entry>
+   <entry key="EMPLEADOS:db_column_0">ID</entry>
+   <entry key="EMPLEADOS.NOMBRE:db_column_type">VARCHAR2</entry>
+   <entry key="return_single_result_set">false</entry>
+   <entry key="EMPLEADOS.NOMBRE:db_column_size">40</entry>
+   <entry key="root_descriptor_alias">EMPLEADOS</entry>
+   <entry key="EMPLEADOS.ID:db_column_type">NUMBER</entry>
+   <entry key="EMPLEADOS.ID:db_column_precision">0</entry>
+   <entry key="EMPLEADOS.CARGO:db_column_type">VARCHAR2</entry>
+</properties>

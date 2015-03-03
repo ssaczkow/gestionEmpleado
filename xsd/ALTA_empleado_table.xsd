@@ -1,0 +1,28 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/ALTA_empleado" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/top/ALTA_empleado" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="EmpleadosCollection" type="EmpleadosCollection"/>
+   <xs:complexType name="EmpleadosCollection">
+      <xs:sequence>
+         <xs:element name="Empleados" type="Empleados" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="Empleados">
+      <xs:sequence>
+         <xs:element name="id" type="xs:decimal"/>
+         <xs:element name="nombre" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="40"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="cargo" minOccurs="0" nillable="true">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="40"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

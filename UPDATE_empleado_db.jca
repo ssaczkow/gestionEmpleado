@@ -1,0 +1,14 @@
+<adapter-config name="UPDATE_empleado" adapter="Database Adapter" wsdlLocation="UPDATE_empleado.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/empleadosPool" UIConnectionName="Connection1" adapterRef=""/>
+  <endpoint-interaction portType="UPDATE_empleado_ptt" operation="update">
+    <interaction-spec className="oracle.tip.adapter.db.DBWriteInteractionSpec">
+      <property name="DescriptorName" value="UPDATE_empleado.Empleados"/>
+      <property name="DmlType" value="update"/>
+      <property name="MappingsMetaDataURL" value="UPDATE_empleado-or-mappings.xml"/>
+      <property name="DetectOmissions" value="true"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

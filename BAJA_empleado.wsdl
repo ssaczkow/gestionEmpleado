@@ -1,0 +1,21 @@
+<?binding.jca BAJA_empleado_db.jca?>
+<wsdl:definitions name="BAJA_empleado" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/ApplicationOSB/GestionEmpleadoProject/BAJA_empleado" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/ApplicationOSB/GestionEmpleadoProject/BAJA_empleado" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/BAJA_empleado">
+    <plt:partnerLinkType name="BAJA_empleado_plt">
+        <plt:role name="BAJA_empleado_role">
+            <plt:portType name="tns:BAJA_empleado_ptt"/>
+        </plt:role>
+    </plt:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/BAJA_empleado" schemaLocation="xsd/BAJA_empleado_table.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="EmpleadosCollection_msg">
+        <wsdl:part name="EmpleadosCollection" element="top:EmpleadosCollection"/>
+    </wsdl:message>
+    <wsdl:portType name="BAJA_empleado_ptt">
+        <wsdl:operation name="delete">
+            <wsdl:input message="tns:EmpleadosCollection_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

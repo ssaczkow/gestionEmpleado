@@ -1,0 +1,16 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="empleado_DIRECTOR_WRITE_Service"
+     targetNamespace="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/empleado_DIRECTOR_WRITE_Service"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:tns="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/empleado_DIRECTOR_WRITE_Service"
+     xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    >
+    <plnk:partnerLinkType name="WRITE_DIRECTOR_Service">
+        <plnk:role name="ordenarPorCargo" portType="tns:ordenarPorCargo"/>
+    </plnk:partnerLinkType>
+    <wsdl:import namespace="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/empleado_DIRECTOR_WRITE_Service"
+         location="http://BUE-865950A-6.usersad.everis.int:7001/soa-infra/services/default/GestionEmpleadoProject/empleado_DIRECTOR_WRITE_Service.wsdl"/>
+</wsdl:definitions>

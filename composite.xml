@@ -47,6 +47,16 @@
           importType="wsdl"/>
   <import namespace="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/empleado_QA_WRITE_Service"
           location="empleado_QA_WRITE_ServiceWrapper.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/ordenarBDporCargo_BPEL"
+          location="ordenarBDporCargo_BPEL.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/OrdenarPorCargo_BPEL"
+          location="http://BUE-865950A-6.usersad.everis.int:7001/soa-infra/services/default/GestionEmpleadoProject/OrdenarPorCargo_BPEL.wsdl"
+          importType="wsdl"/>
+  <import namespace="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado_Service"
+          location="http://BUE-865950A-6.usersad.everis.int:7001/soa-infra/services/default/GestionEmpleadoProject/SELECT_empleado_Service.wsdl"
+          importType="wsdl"/>
+  <import namespace="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado_Service"
+          location="SELECT_empleado_ServiceWrapper.wsdl" importType="wsdl"/>
   <service name="ALTA_empleado_Service"
            ui:wsdlLocation="ALTA_empleado_Service.wsdl">
     <interface.wsdl interface="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/ALTA_empleado_Service#wsdl.interface(alta_ptt)"/>
@@ -100,6 +110,14 @@
     <interface.wsdl interface="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/OrdenarPorCargo_BPEL#wsdl.interface(OrdenarPorCargo_BPEL)"/>
     <binding.ws port="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/OrdenarPorCargo_BPEL#wsdl.endpoint(ordenarporcargo_bpel_client_ep/OrdenarPorCargo_BPEL_pt)"/>
   </service>
+  <service name="ordenarbdporcargo_bpel_client_ep"
+           ui:wsdlLocation="ordenarBDporCargo_BPEL.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/ordenarBDporCargo_BPEL#wsdl.interface(ordenarBDporCargo_BPEL)"/>
+    <binding.ws port="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/ordenarBDporCargo_BPEL#wsdl.endpoint(ordenarbdporcargo_bpel_client_ep/ordenarBDporCargo_BPEL_pt)">
+      <property name="weblogic.wsee.wsat.transaction.flowOption"
+                type="xs:string" many="false">NEVER</property>
+    </binding.ws>
+  </service>
   <component name="UPDATE_empleado_Mediator">
     <implementation.mediator src="UPDATE_empleado_Mediator.mplan"/>
   </component>
@@ -122,6 +140,11 @@
   </component>
   <component name="SELECT_empleado_Mediator">
     <implementation.mediator src="SELECT_empleado_Mediator.mplan"/>
+  </component>
+  <component name="ordenarBDporCargo_BPEL" version="2.0">
+    <implementation.bpel src="ordenarBDporCargo_BPEL.bpel"/>
+    <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string"
+              many="false">async.persist</property>
   </component>
   <reference name="ALTA_empleado" ui:wsdlLocation="ALTA_empleado.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/ApplicationOSB/GestionEmpleadoProject/ALTA_empleado#wsdl.interface(ALTA_empleado_ptt)"/>
@@ -198,6 +221,26 @@
                 type="xs:string" many="false">WSDLDriven</property>
     </binding.ws>
   </reference>
+  <reference name="ordenarporcargo_BPEL_Service"
+             ui:wsdlLocation="http://BUE-865950A-6.usersad.everis.int:7001/soa-infra/services/default/GestionEmpleadoProject/OrdenarPorCargo_BPEL.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/OrdenarPorCargo_BPEL#wsdl.interface(OrdenarPorCargo_BPEL)"/>
+    <binding.ws port="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/OrdenarPorCargo_BPEL#wsdl.endpoint(ordenarporcargo_bpel_client_ep/OrdenarPorCargo_BPEL_pt)"
+                location="http://bue-865950a-6.usersad.everis.int:7001/soa-infra/services/default/GestionEmpleadoProject/ordenarporcargo_bpel_client_ep?WSDL"
+                soapVersion="1.1">
+      <property name="weblogic.wsee.wsat.transaction.flowOption"
+                type="xs:string" many="false">WSDLDriven</property>
+    </binding.ws>
+  </reference>
+  <reference name="SELECT_ALL_BD_Service"
+             ui:wsdlLocation="http://BUE-865950A-6.usersad.everis.int:7001/soa-infra/services/default/GestionEmpleadoProject/SELECT_empleado_Service.wsdl">
+    <interface.wsdl interface="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado_Service#wsdl.interface(execute_ptt)"/>
+    <binding.ws port="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado_Service#wsdl.endpoint(SELECT_empleado_Service/execute_pt)"
+                location="http://bue-865950a-6.usersad.everis.int:7001/soa-infra/services/default/GestionEmpleadoProject/SELECT_empleado_Service?WSDL"
+                soapVersion="1.1">
+      <property name="weblogic.wsee.wsat.transaction.flowOption"
+                type="xs:string" many="false">WSDLDriven</property>
+    </binding.ws>
+  </reference>
   <wire>
     <source.uri>BAJA_empleado_Service</source.uri>
     <target.uri>BAJA_empleado_Mediator/BAJA_empleado_Mediator</target.uri>
@@ -257,5 +300,17 @@
   <wire>
     <source.uri>SELECT_empleado_Mediator/SELECT_empleado</source.uri>
     <target.uri>SELECT_empleado</target.uri>
+  </wire>
+  <wire>
+    <source.uri>ordenarBDporCargo_BPEL/SELECT_ALL_BD_Service</source.uri>
+    <target.uri>SELECT_ALL_BD_Service</target.uri>
+  </wire>
+  <wire>
+    <source.uri>ordenarBDporCargo_BPEL/ordenarporcargo_BPEL_Service</source.uri>
+    <target.uri>ordenarporcargo_BPEL_Service</target.uri>
+  </wire>
+  <wire>
+    <source.uri>ordenarbdporcargo_bpel_client_ep</source.uri>
+    <target.uri>ordenarBDporCargo_BPEL/ordenarbdporcargo_bpel_client</target.uri>
   </wire>
 </composite>

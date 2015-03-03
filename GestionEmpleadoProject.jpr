@@ -61,7 +61,7 @@
       <string v="oracle.toplink.workbench.addin/toplinkContentSet"/>
    </list>
    <value n="defaultPackage" v="gestionempleadoproject"/>
-   <value n="Namespace" v="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/OrdenarPorCargo_BPEL"/>
+   <value n="Namespace" v="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/ordenarBDporCargo_BPEL"/>
    <hash n="oracle.ide.model.ResourcePaths">
       <hash n="resourcesContentSet">
          <list n="url-path"/>
@@ -377,11 +377,16 @@
          </list>
       </hash>
    </hash>
+   <url n="ordenarBDporCargo_BPEL_bpelFileURL" path="ordenarBDporCargo_BPEL.bpel"/>
+   <value n="ordenarBDporCargo_BPEL_Namespace" v="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/ordenarBDporCargo_BPEL"/>
+   <value n="ordenarBDporCargo_BPEL_ProcessName" v="ordenarBDporCargo_BPEL"/>
+   <value n="ordenarBDporCargo_BPEL_Template" v="BPEL_ONE_WAY_PROCESS"/>
+   <value n="ordenarBDporCargo_BPEL_wsdl" v="ordenarBDporCargo_BPEL.wsdl"/>
    <url n="OrdenarPorCargo_BPEL_bpelFileURL" path="OrdenarPorCargo_BPEL.bpel"/>
    <value n="OrdenarPorCargo_BPEL_Namespace" v="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/OrdenarPorCargo_BPEL"/>
    <value n="OrdenarPorCargo_BPEL_ProcessName" v="OrdenarPorCargo_BPEL"/>
    <value n="OrdenarPorCargo_BPEL_Template" v="BPEL_ONE_WAY_PROCESS"/>
    <value n="OrdenarPorCargo_BPEL_wsdl" v="OrdenarPorCargo_BPEL.wsdl"/>
-   <value n="ProcessName" v="OrdenarPorCargo_BPEL"/>
+   <value n="ProcessName" v="ordenarBDporCargo_BPEL"/>
    <value n="Template" v="BPEL_ONE_WAY_PROCESS"/>
 </jpr:project>

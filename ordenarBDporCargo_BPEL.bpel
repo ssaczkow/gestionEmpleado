@@ -1,0 +1,95 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Tue Mar 03 14:19:46 ART 2015
+  Author:  ssaczkow
+  Type: BPEL 2.0 Process
+  Purpose: One Way BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="ordenarBDporCargo_BPEL"
+               targetNamespace="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/ordenarBDporCargo_BPEL"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/ordenarBDporCargo_BPEL"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado_Service"
+         xmlns:ns2="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/OrdenarPorCargo_BPEL"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:ns3="http://www.everis.com/listaEmpleado">
+
+  <import namespace="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/ordenarBDporCargo_BPEL" location="ordenarBDporCargo_BPEL.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="ordenarbdporcargo_bpel_client" partnerLinkType="client:ordenarBDporCargo_BPEL" myRole="ordenarBDporCargo_BPELProvider"/>
+    <partnerLink name="SELECT_ALL_BD_Service"
+                 partnerLinkType="ns1:SELECT_ALL_BD_Service"
+                 partnerRole="execute_ptt"/>
+    <partnerLink name="ordenarporcargo_BPEL_Service"
+                 partnerLinkType="ns2:OrdenarPorCargo_BPEL"
+                 partnerRole="OrdenarPorCargo_BPELProvider"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:ordenarBDporCargo_BPELRequestMessage"/>
+    <variable name="SELECT_ALL_BD_Invoke_execute_InputVariable"
+              messageType="ns1:requestMessage"/>
+    <variable name="SELECT_ALL_BD_Invoke_execute_OutputVariable"
+              messageType="ns1:replyMessage"/>
+    <variable name="ordenarporcargo_Invoke_process_InputVariable"
+              messageType="ns2:OrdenarPorCargo_BPELRequestMessage"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in ordenarBDporCargo_BPEL.wsdl) -->
+    <receive name="receiveInput" partnerLink="ordenarbdporcargo_bpel_client" portType="client:ordenarBDporCargo_BPEL" operation="process" variable="inputVariable" createInstance="yes"/>
+    <assign name="Input_to_select_all_BD_Assign">
+      <copy>
+        <from>$inputVariable.payload</from>
+        <to>$SELECT_ALL_BD_Invoke_execute_InputVariable.part1</to>
+      </copy>
+    </assign>
+    <invoke name="SELECT_ALL_BD_Invoke" bpelx:invokeAsDetail="no"
+            partnerLink="SELECT_ALL_BD_Service" portType="ns1:execute_ptt"
+            operation="execute"
+            inputVariable="SELECT_ALL_BD_Invoke_execute_InputVariable"
+            outputVariable="SELECT_ALL_BD_Invoke_execute_OutputVariable"/>
+    <assign name="Output_select_all_bd_to_ordenarPorCargo_Assign">
+      <copy>
+        <from>$SELECT_ALL_BD_Invoke_execute_OutputVariable.part2</from>
+        <to>$ordenarporcargo_Invoke_process_InputVariable.payload</to>
+      </copy>
+    </assign>
+    <invoke name="ordenarporcargo_Invoke" bpelx:invokeAsDetail="no"
+            partnerLink="ordenarporcargo_BPEL_Service"
+            portType="ns2:OrdenarPorCargo_BPEL" operation="process"
+            inputVariable="ordenarporcargo_Invoke_process_InputVariable"/>
+  </sequence>
+</process>

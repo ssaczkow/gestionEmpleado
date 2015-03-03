@@ -9,7 +9,7 @@
     <switch>
       <case executionType="direct" name="empleado_DIRECTOR_WRITE.Write">
         <condition language="xpath">
-          <expression>$in.part1/inp1:empleado/inp1:cargo = "director"</expression>
+          <expression>$in.part1/inp1:empleado/inp1:cargo = "DIRECTOR"</expression>
         </condition>
         <action>
           <transform>

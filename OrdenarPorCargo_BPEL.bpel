@@ -17,7 +17,19 @@
                xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
          xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
          xmlns:ns1="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/empleado_DIRECTOR_WRITE_Service"
-         xmlns:ns2="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/empleado_QA_WRITE_Service">
+         xmlns:ns2="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/empleado_QA_WRITE_Service"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:ns3="http://www.everis.com/listaEmpleado"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns4="http://www.everis.com/empleado">
 
   <import namespace="http://xmlns.oracle.com/ApplicationOSB/GestionEmpleadoProject/OrdenarPorCargo_BPEL" location="OrdenarPorCargo_BPEL.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
   <!-- 
@@ -66,13 +78,70 @@
 
     <!-- Receive input from requestor. (Note: This maps to operation defined in OrdenarPorCargo_BPEL.wsdl) -->
     <receive name="receiveInput" partnerLink="ordenarporcargo_bpel_client" portType="client:OrdenarPorCargo_BPEL" operation="process" variable="inputVariable" createInstance="yes"/>
-    <invoke name="WRITE_QA" bpelx:invokeAsDetail="no"
-            partnerLink="WRITE_QA_Service" portType="ns2:ordenarPorNombre_ptt"
-            operation="ordenarPorNombre"
-            inputVariable="WRITE_QA_ordenarPorNombre_InputVariable"/>
-    <invoke name="WRITE_DIRECTOR" bpelx:invokeAsDetail="no"
-            partnerLink="WRITE_DIRECTOR_Service"
-            portType="ns1:ordenarPorCargo" operation="ordenarPorCargo"
-            inputVariable="WRITE_DIRECTOR_ordenarPorCargo_InputVariable"/>
+    <forEach parallel="no" counterName="counter" name="ForEach">
+      <startCounterValue>0</startCounterValue>
+      <finalCounterValue>count($inputVariable.payload/ns3:empleado)</finalCounterValue>
+      <scope name="Scope1">
+        <sequence>
+          <if name="If_DIRECTOR">
+            <documentation>cargo == DIRECTOR</documentation>
+            <condition>$inputVariable.payload/ns3:empleado[$counter]/ns3:cargo = "DIRECTOR"</condition>
+            <sequence>
+              <assign name="WRITE_DIRECTOR_Assign">
+                <copy>
+                  <from>$inputVariable.payload/ns3:empleado[$counter]/ns3:id</from>
+                  <to>$WRITE_DIRECTOR_ordenarPorCargo_InputVariable.part1/ns4:id</to>
+                </copy>
+                <copy>
+                  <from>$inputVariable.payload/ns3:empleado[$counter]/ns3:nombre</from>
+                  <to>$WRITE_DIRECTOR_ordenarPorCargo_InputVariable.part1/ns4:nombre</to>
+                </copy>
+                <copy>
+                  <from>$inputVariable.payload/ns3:empleado[$counter]/ns3:cargo</from>
+                  <to>$WRITE_DIRECTOR_ordenarPorCargo_InputVariable.part1/ns4:cargo</to>
+                </copy>
+              </assign>
+              <invoke name="WRITE_DIRECTOR" bpelx:invokeAsDetail="no"
+                      partnerLink="WRITE_DIRECTOR_Service"
+                      portType="ns1:ordenarPorCargo" operation="ordenarPorCargo"
+                      inputVariable="WRITE_DIRECTOR_ordenarPorCargo_InputVariable"/>
+            </sequence>
+            <else>
+              <documentation>OTHERS</documentation>
+              <empty name="Empty"/>
+            </else>
+          </if>
+          <if name="If_QA">
+            <documentation>cargo == QA</documentation>
+            <condition>$inputVariable.payload/ns3:empleado[$counter]/ns3:cargo = "QA" </condition>
+            <sequence name="Sequence2">
+              <assign name="WRITE_QA_Assign">
+                <copy>
+                  <from>$inputVariable.payload/ns3:empleado[$counter]/ns3:id</from>
+                  <to>$WRITE_QA_ordenarPorNombre_InputVariable.part1/ns4:id</to>
+                </copy>
+                <copy>
+                  <from>$inputVariable.payload/ns3:empleado[$counter]/ns3:nombre</from>
+                  <to>$WRITE_QA_ordenarPorNombre_InputVariable.part1/ns4:nombre</to>
+                </copy>
+                <copy>
+                  <from>$inputVariable.payload/ns3:empleado[$counter]/ns3:cargo</from>
+                  <to>$WRITE_QA_ordenarPorNombre_InputVariable.part1/ns4:cargo</to>
+                </copy>
+              </assign>
+              <invoke name="WRITE_QA" bpelx:invokeAsDetail="no"
+                      partnerLink="WRITE_QA_Service"
+                      portType="ns2:ordenarPorNombre_ptt"
+                      operation="ordenarPorNombre"
+                      inputVariable="WRITE_QA_ordenarPorNombre_InputVariable"/>
+            </sequence>
+            <else>
+              <documentation>OTHERS</documentation>
+              <empty name="Empty"/>
+            </else>
+          </if>
+        </sequence>
+      </scope>
+    </forEach>
   </sequence>
 </process>

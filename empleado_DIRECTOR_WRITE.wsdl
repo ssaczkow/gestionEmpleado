@@ -2,8 +2,8 @@
      name="empleado_DIRECTOR_WRITE"
      targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/file/ApplicationOSB/GestionEmpleadoProject/empleado_DIRECTOR_WRITE"
      xmlns:jca="http://xmlns.oracle.com/pcbpel/wsdl/jca/"
-     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
      xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/file/ApplicationOSB/GestionEmpleadoProject/empleado_DIRECTOR_WRITE"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
      xmlns:imp1="http://www.everis.com/empleado"
      xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
     >

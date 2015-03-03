@@ -3,22 +3,22 @@
      name="SELECT_empleado_Service"
      targetNamespace="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado_Service"
      xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-     xmlns:inp1="http://www.everis.com/empleado"
+     xmlns:inp1="http://www.everis.com/listaEmpleado"
      xmlns:tns="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado_Service"
     >
     <wsdl:types>
         <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-            <xsd:import namespace="http://www.everis.com/empleado" schemaLocation="xsd/empleado.xsd"/>
+            <xsd:import namespace="http://www.everis.com/listaEmpleado" schemaLocation="xsd/listaEmpleado.xsd"/>
         </xsd:schema>
     </wsdl:types>
     <wsdl:message name="requestMessage">
-        <wsdl:part name="part1" element="inp1:empleado"/>
+        <wsdl:part name="part1" element="inp1:listaEmpleado"/>
     </wsdl:message>
     <wsdl:message name="replyMessage">
-        <wsdl:part name="part1" element="inp1:empleado"/>
+        <wsdl:part name="part2" element="inp1:listaEmpleado"/>
     </wsdl:message>
-    <wsdl:portType name="select_ptt">
-        <wsdl:operation name="select">
+    <wsdl:portType name="execute_ptt">
+        <wsdl:operation name="execute">
             <wsdl:input message="tns:requestMessage"/>
             <wsdl:output message="tns:replyMessage"/>
         </wsdl:operation>

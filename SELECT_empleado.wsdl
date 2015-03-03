@@ -11,7 +11,7 @@
         </schema>
     </wsdl:types>
     <wsdl:message name="SELECT_empleadoSelect_inputParameters">
-        <wsdl:part name="SELECT_empleadoSelect_inputParameters" element="top:SELECT_empleadoSelect_paramInputParameters"/>
+        <wsdl:part name="SELECT_empleadoSelect_inputParameters" element="top:SELECT_empleadoSelectInputParameters"/>
     </wsdl:message>
     <wsdl:message name="EmpleadosCollection_msg">
         <wsdl:part name="EmpleadosCollection" element="top:EmpleadosCollection"/>

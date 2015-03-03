@@ -65,8 +65,8 @@
   </service>
   <service name="SELECT_empleado_Service"
            ui:wsdlLocation="SELECT_empleado_Service.wsdl">
-    <interface.wsdl interface="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado_Service#wsdl.interface(select_ptt)"/>
-    <binding.ws port="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado_Service#wsdl.endpoint(SELECT_empleado_Service/select_pt)">
+    <interface.wsdl interface="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado_Service#wsdl.interface(execute_ptt)"/>
+    <binding.ws port="http://oracle.com/sca/soapservice/ApplicationOSB/GestionEmpleadoProject/SELECT_empleado_Service#wsdl.endpoint(SELECT_empleado_Service/execute_pt)">
       <property name="weblogic.wsee.wsat.transaction.flowOption"
                 type="xs:string" many="false">NEVER</property>
     </binding.ws>
@@ -103,9 +103,6 @@
   <component name="UPDATE_empleado_Mediator">
     <implementation.mediator src="UPDATE_empleado_Mediator.mplan"/>
   </component>
-  <component name="SELECT_empleado_Mediator">
-    <implementation.mediator src="SELECT_empleado_Mediator.mplan"/>
-  </component>
   <component name="BAJA_empleado_Mediator">
     <implementation.mediator src="BAJA_empleado_Mediator.mplan"/>
   </component>
@@ -122,6 +119,9 @@
     <implementation.bpel src="OrdenarPorCargo_BPEL.bpel"/>
     <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string"
               many="false">async.persist</property>
+  </component>
+  <component name="SELECT_empleado_Mediator">
+    <implementation.mediator src="SELECT_empleado_Mediator.mplan"/>
   </component>
   <reference name="ALTA_empleado" ui:wsdlLocation="ALTA_empleado.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/ApplicationOSB/GestionEmpleadoProject/ALTA_empleado#wsdl.interface(ALTA_empleado_ptt)"/>
@@ -207,14 +207,6 @@
     <target.uri>BAJA_empleado</target.uri>
   </wire>
   <wire>
-    <source.uri>SELECT_empleado_Service</source.uri>
-    <target.uri>SELECT_empleado_Mediator/SELECT_empleado_Mediator</target.uri>
-  </wire>
-  <wire>
-    <source.uri>SELECT_empleado_Mediator/SELECT_empleado</source.uri>
-    <target.uri>SELECT_empleado</target.uri>
-  </wire>
-  <wire>
     <source.uri>UPDATE_empleado_Service</source.uri>
     <target.uri>UPDATE_empleado_Mediator/UPDATE_empleado_Mediator</target.uri>
   </wire>
@@ -257,5 +249,13 @@
   <wire>
     <source.uri>OrdenarPorCargo_BPEL/WRITE_QA_Service</source.uri>
     <target.uri>WRITE_QA_Service</target.uri>
+  </wire>
+  <wire>
+    <source.uri>SELECT_empleado_Service</source.uri>
+    <target.uri>SELECT_empleado_Mediator/SELECT_empleado_Mediator</target.uri>
+  </wire>
+  <wire>
+    <source.uri>SELECT_empleado_Mediator/SELECT_empleado</source.uri>
+    <target.uri>SELECT_empleado</target.uri>
   </wire>
 </composite>

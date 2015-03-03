@@ -12,19 +12,9 @@
          <querying>
             <queries>
                <query name="SELECT_empleadoSelect" xsi:type="read-all-query">
-                  <criteria operator="equal" xsi:type="relation-expression">
-                     <left name="id" xsi:type="query-key-expression">
-                        <base xsi:type="base-expression"/>
-                     </left>
-                     <right xsi:type="parameter-expression">
-                        <parameter name="param" xsi:type="column"/>
-                     </right>
-                  </criteria>
-                  <arguments>
-                     <argument name="param">
-                        <type>java.lang.String</type>
-                     </argument>
-                  </arguments>
+                  <call xsi:type="sql-call">
+                     <sql>SELECT *  FROM EMPLEADOS </sql>
+                  </call>
                   <reference-class>SELECT_empleado.Empleados</reference-class>
                   <container xsi:type="list-container-policy">
                      <collection-type>java.util.Vector</collection-type>
